@@ -56,3 +56,13 @@ plt.ylabel(greek_letterz[16])
 plt.title('Density Plot ' +'\n' + 'Time='+str(i.T)+', Steps='+
           str(result[3]))
 plt.show()
+
+##Errors
+plt.figure()
+plt.plot(i.xvals,result[4][:-1],'g', label='HLLC')
+plt.plot(i.xvals,result[5][:-1],'r', label='ML')
+plt.legend()
+plt.title('Mean HLLC error vs ML error')
+plt.xlabel('x')
+plt.ylabel('error')
+plt.show()

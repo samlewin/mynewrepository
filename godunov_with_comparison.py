@@ -56,5 +56,4 @@ def MLgodunov(rho, u, p, gamma, limit, dx, Ccfl = 0.9):
         currentU1 = currentrho
         currentU2 = currentrho*currentu
         currentU3 = currentrho*(0.5*currentu**2 + currentp/((gamma - 1)*currentrho))
-    print(hllcerror/counter, mlerror/counter)
-    return currentu[1:len(currentu)-1],currentrho[1:len(currentrho)-1],currentp[1:len(currentp)-1],counter
+    return currentu[1:len(currentu)-1],currentrho[1:len(currentrho)-1],currentp[1:len(currentp)-1],counter, hllcerror/counter, mlerror/counter
