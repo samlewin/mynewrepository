@@ -1,9 +1,11 @@
 import numpy as np
 import pandas as pd
 from pstar_exact import pstarexact
-import math
+import math, time
 
 #Generate learning data
+start = time.time()
+
 np.random.seed(42)
 velocitiesL = 10*(np.random.rand(40000, 1) - 0.5)
 np.random.seed(43)
@@ -37,3 +39,6 @@ scaled = scaler.fit_transform(inputs)
 from sklearn.ensemble import RandomForestRegressor
 forest_reg = RandomForestRegressor(n_estimators=30, max_features=6)
 forest_reg.fit(scaled, final_vals["pstarexact"].values)
+
+end = time.time() - start
+print("Training took", end)
