@@ -1,4 +1,4 @@
-def pstarHLLC(uL, uR, pL, pR, rhoL, rhoR, gamma):
+def pstarHLLC(uL, uR, pL, pR, rhoL, rhoR, gamma=1.4):
     #Define initial variables, check pressure positivity condition
     aL, aR = (gamma*pL/rhoL)**0.5, (gamma*pR/rhoR)**0.5
     if not 2*aL/(gamma - 1) + 2*aR/(gamma - 1) > uR - uL :
