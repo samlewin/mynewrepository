@@ -1,7 +1,7 @@
 #Import the initial data
-test0 = input("Enter name of test file:")
-test1 = input("Enter x0:")
-test2 = input("Enter mesh divisions:")
+test0 = "test6"
+test1 = "0.3"
+test2 = "100"
 file = open(test0,'r')
 constants = []
 for line in file:
