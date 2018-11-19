@@ -11,3 +11,4 @@ def pstarHLLC(uL, uR, pL, pR, rhoL, rhoR, gamma):
     #Compure the pressure estimate
     Ppvrs = 0.5*(pL + pR) - 0.5*(uR - uL)*rhobar*abar
     pstar = max(0, Ppvrs)
+    return pstar
