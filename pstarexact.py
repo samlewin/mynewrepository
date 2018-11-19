@@ -2,8 +2,6 @@ from newtonraph import newton_raph
 import math
 
 def pstarexact(uL, uR, rhoL, rhoR, pL, pR, gamma=1.4):
-    uL, uR, rhoL, rhoR, pL, pR = (initvals[0], initvals[1], initvals[2],
-                                  initvals[3], initvals[4], initvals[5])
     TOL = 10**-6
     aL, aR = math.sqrt(gamma*pL/rhoL), math.sqrt(gamma*pR/rhoR)
     if not 2*aL/(gamma - 1) + 2*aR/(gamma - 1) > uR - uL: #check that the pressure positivity condition holds

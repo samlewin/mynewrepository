@@ -13,6 +13,8 @@ def MLgodunov(rho, u, p, gamma, limit, dx, Ccfl = 0.9):
     currentU2 = currentrho*currentu
     currentU3 = currentrho*(0.5*currentu**2 + currentp/((gamma - 1)*currentrho))
     counter, time, l = 0, 0, len(currentu) - 1
+    hllcerror = np.zeros(l)
+    mlerror = np.zeros(l)
 
     while time < limit:
         currenta = (gamma*currentp/currentrho)**0.5
@@ -28,14 +30,15 @@ def MLgodunov(rho, u, p, gamma, limit, dx, Ccfl = 0.9):
 
         #Calculate the fluxes using the HLLC method
         pstarML = ML_calc_pstar(currentu[:-1], currentu[1:], currentrho[:-1], currentrho[1:], currentp[:-1], currentp[1:])
-        pstarHLLC = pstarHLLC(currentu[:-1], currentu[1:], currentrho[:-1], currentrho[1:], currentp[:-1], currentp[1:])
-        pstarexact = pstarexact(currentu[:-1], currentu[1:], currentrho[:-1], currentrho[1:], currentp[:-1], currentp[1:])
+        pstarhllc = pstarHLLC(currentu[:-1], currentu[1:], currentrho[:-1], currentrho[1:], currentp[:-1], currentp[1:])
+        pstarExact = []
+        for i in range(l):
+            pstarExact.append(pstarexact(currentu[i], currentu[i+1], currentrho[i], currentrho[i+1], currentp[i], currentp[i+1]))
+        pstarExact = np.array(pstarExact)
+        hllcerror += np.vectorize(abs)(pstarhllc - pstarExact)
+        mlerror += np.vectorize(abs)(pstarML - pstarExact)
 
-        rmse1 = mean_squared_error(pstarML, pstarexact)
-        rmse2 = mean_squared_error(pstarHLLC, pstarexact)
-
-        print("HLLC error:", rmse2, " ", "ML error:", rmse1)
-
+        pstar = pstarML
         result = np.array([MLpstarflux.MLflux(currentu[j], currentu[j+1], currentp[j], currentp[j+1],
                                currentrho[j], currentrho[j+1], gamma, pstar[j]) for j in range(l)])
         fluxes1, fluxes2, fluxes3 = np.array(result[:,0]), np.array(result[:,1]), np.array(result[:,2])
@@ -53,4 +56,5 @@ def MLgodunov(rho, u, p, gamma, limit, dx, Ccfl = 0.9):
         currentU1 = currentrho
         currentU2 = currentrho*currentu
         currentU3 = currentrho*(0.5*currentu**2 + currentp/((gamma - 1)*currentrho))
+    print(hllcerror/counter, mlerror/counter)
     return currentu[1:len(currentu)-1],currentrho[1:len(currentrho)-1],currentp[1:len(currentp)-1],counter
